@@ -1,3 +1,4 @@
+import './vendor.mjs';
 import { cp, mkdir, rm } from 'node:fs/promises';
 
 const source = new URL('../web/', import.meta.url);

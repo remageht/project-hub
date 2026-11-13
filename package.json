@@ -7,9 +7,12 @@
   "scripts": {
     "dev": "node scripts/serve.mjs",
     "build": "node scripts/build.mjs",
-    "check": "node --check web/main.js && node --check scripts/serve.mjs && node --check scripts/build.mjs"
+    "check": "node --check web/main.js && node --check web/project-objects.js && node --check scripts/serve.mjs && node --check scripts/build.mjs && node --check scripts/vendor.mjs"
   },
   "engines": {
     "node": ">=22"
+  },
+  "dependencies": {
+    "three": "0.187.0"
   }
 }

@@ -346,6 +346,46 @@ html[data-motion="off"] *, html[data-motion="off"] *::before, html[data-motion="
   .site-footer > span { width: 100%; }
   .motion-toggle { margin-right: auto; }
 }
+.projects-3d-canvas { position: fixed; inset: 0; z-index: 3; width: 100%; height: 100%; pointer-events: none; }
+.object-stage { position: relative; }
+.scene-caption { display: none; }
+.project-card .object-stage > .scene-caption { position: absolute; bottom: 6px; left: 0; right: 0; text-align: center; padding: 0 8px; color: var(--site-muted); font-family: var(--site-font); font-size: calc(8px * var(--site-type, 1)); line-height: 1.45; letter-spacing: .09em; }
+.object-stage.scene-ready > :not(.scene-caption) { visibility: hidden; }
+.object-stage.scene-ready > .scene-caption { display: block; }
+.astro-stage { position: absolute; top: 62px; right: 18px; width: 46%; height: 306px; z-index: 2; }
+.astro-card.has-3d .astro-image { opacity: .17; }
+.astro-card.has-3d .image-credit { display: none; }
+.astro-card, .hush-card { min-height: 448px; }
+.transfer-visual.object-stage { height: 218px; }
+.mikro-card, .voice-card { min-height: 452px; }
+.mikro-visual.object-stage { height: 219px; border-color: color-mix(in srgb, var(--site-border) 50%, transparent); }
+.mikro-visual.scene-ready > img { visibility: visible; opacity: .07; transform: none; }
+.voice-visual.object-stage { height: 228px; }
+.terminal-visual.object-stage { height: 206px; position: relative; background: transparent; border-color: transparent; }
+.trade-visual.object-stage, .namaz-visual.object-stage { height: 206px; }
+.devops-card, .trade-card, .namaz-card { min-height: 418px; }
+.motion-toggle:disabled { cursor: default; opacity: .65; }
+@media (max-width: 850px) {
+  .astro-stage { width: 49%; }
+  .voice-visual.object-stage { height: 220px; }
+  .namaz-card { min-height: 295px; }
+  .namaz-card .namaz-visual.object-stage { width: 200px; height: 170px; top: 70px; right: 24px; }
+  .namaz-card .card-body { width: calc(100% - 205px); }
+}
+@media (max-width: 560px) {
+  .astro-card { min-height: 530px; }
+  .astro-stage { position: relative; inset: auto; width: calc(100% - 32px); height: 224px; margin: 0 auto; flex: none; order: 1; }
+  .astro-card .card-top { order: 0; }
+  .astro-card .astro-content { order: 2; }
+  .hush-card, .mikro-card, .voice-card { min-height: 420px; }
+  .transfer-visual.object-stage, .mikro-visual.object-stage, .voice-visual.object-stage { height: 211px; }
+  .devops-card, .trade-card, .namaz-card { min-height: 402px; }
+  .terminal-visual.object-stage { height: 189px; }
+  .trade-visual.object-stage { height: 195px; }
+  .namaz-card .namaz-visual.object-stage { position: relative; inset: auto; width: auto; height: 196px; }
+  .namaz-card .card-body { width: auto; }
+  .eden-visual.object-stage { min-height: 230px; }
+}
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }

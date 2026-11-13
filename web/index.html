@@ -13,6 +13,7 @@
   <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="./style.css">
   <script src="./main.js" defer></script>
+  <script type="module" src="./project-objects.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#projects">Перейти к проектам</a>
@@ -61,6 +62,7 @@
         <div class="project-grid">
           <article class="project-card astro-card span-8" data-reveal>
             <img class="astro-image" src="./assets/astro-voyager.webp" alt="Чёрная дыра Sgr A* с гравитационным линзированием в Astro Voyager" width="1280" height="720" fetchpriority="high">
+            <div class="astro-stage object-stage" data-model="astro" aria-hidden="true"><span class="scene-caption">3D / ЧЁРНАЯ ДЫРА · ПЛАНЕТА · ЗОНД</span></div>
             <div class="card-top"><span class="category">01 / ИССЛЕДОВАНИЯ</span><span class="outline-label">C++ · OpenGL</span></div>
             <div class="astro-content">
               <span class="feature-kicker">ВСЕЛЕННАЯ НА ТВОЁМ ЭКРАНЕ</span>
@@ -76,11 +78,11 @@
 
           <article class="project-card hush-card span-4" data-reveal>
             <div class="card-top"><span class="category">02 / ИНСТРУМЕНТЫ</span><span class="status-label">ALPHA</span></div>
-            <div class="transfer-visual" aria-hidden="true">
+            <div class="transfer-visual object-stage" data-model="hush" aria-hidden="true">
               <div class="device device-phone"><span></span></div>
               <div class="transfer-path"><span class="transfer-packet"></span><span class="transfer-packet"></span><span class="transfer-packet"></span></div>
               <div class="device device-computer"><span></span></div>
-              <span class="transfer-caption">ТВОИ ФАЙЛЫ. ТВОЯ СЕТЬ.</span>
+              <span class="transfer-caption scene-caption">3D / НОУТБУК · ТЕЛЕФОН · ФАЙЛЫ</span>
             </div>
             <div class="card-body">
               <h3><img class="title-icon" src="./assets/hushdrop.webp" alt="" width="28" height="28">HushDrop</h3>
@@ -91,37 +93,37 @@
 
           <article class="project-card mikro-card span-6" data-reveal>
             <div class="card-top"><span class="category">03 / ИНЖЕНЕРИЯ</span><svg class="icon muted-icon" aria-hidden="true"><use href="#icon-chip"/></svg></div>
-            <div class="mikro-visual"><img src="./assets/mikrolab.webp" alt="Студия MikroLab: редактор ассемблера, регистры процессора и ячейки памяти" width="1440" height="900" loading="lazy"></div>
+            <div class="mikro-visual object-stage" data-model="chip"><img src="./assets/mikrolab.webp" alt="Студия MikroLab: редактор ассемблера, регистры процессора и ячейки памяти" width="1440" height="900" loading="lazy"><span class="scene-caption">3D / ПРОЦЕССОР · КОНТАКТЫ · ПЛАТА</span></div>
             <div class="card-body"><h3>MikroLab</h3><p>Заглянуть внутрь процессора. Эмулятор Intel 8080, ассемблер, отладчик и учебная лаборатория.</p><div class="card-footer"><span class="tech-label">C# · .NET · Intel 8080</span><a class="icon-link" href="https://github.com/remageht/MikroLab" target="_blank" rel="noopener noreferrer" aria-label="Открыть проект MikroLab"><svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></a></div></div>
           </article>
 
           <article class="project-card voice-card span-6" data-reveal>
             <div class="card-top"><span class="category">04 / ИСКУССТВЕННЫЙ ИНТЕЛЛЕКТ</span><span class="outline-label">LOCAL-FIRST</span></div>
-            <div class="voice-visual" aria-hidden="true"><span class="voice-mark"><svg class="icon"><use href="#icon-wave"/></svg></span><div class="waveform"><i style="--bar:22%;--n:0"></i><i style="--bar:35%;--n:1"></i><i style="--bar:19%;--n:2"></i><i style="--bar:47%;--n:3"></i><i style="--bar:67%;--n:4"></i><i style="--bar:38%;--n:5"></i><i style="--bar:80%;--n:6"></i><i style="--bar:100%;--n:7"></i><i style="--bar:61%;--n:8"></i><i style="--bar:83%;--n:9"></i><i style="--bar:50%;--n:10"></i><i style="--bar:72%;--n:11"></i><i style="--bar:94%;--n:12"></i><i style="--bar:69%;--n:13"></i><i style="--bar:40%;--n:14"></i><i style="--bar:66%;--n:15"></i><i style="--bar:88%;--n:16"></i><i style="--bar:57%;--n:17"></i><i style="--bar:36%;--n:18"></i><i style="--bar:64%;--n:19"></i><i style="--bar:43%;--n:20"></i><i style="--bar:25%;--n:21"></i><i style="--bar:39%;--n:22"></i><i style="--bar:16%;--n:23"></i></div><span class="visual-caption">ТЕКСТ → ГОЛОС → АУДИОКНИГА</span></div>
+            <div class="voice-visual object-stage" data-model="voice" aria-hidden="true"><span class="voice-mark"><svg class="icon"><use href="#icon-wave"/></svg></span><div class="waveform"><i style="--bar:22%;--n:0"></i><i style="--bar:35%;--n:1"></i><i style="--bar:19%;--n:2"></i><i style="--bar:47%;--n:3"></i><i style="--bar:67%;--n:4"></i><i style="--bar:38%;--n:5"></i><i style="--bar:80%;--n:6"></i><i style="--bar:100%;--n:7"></i><i style="--bar:61%;--n:8"></i><i style="--bar:83%;--n:9"></i><i style="--bar:50%;--n:10"></i><i style="--bar:72%;--n:11"></i><i style="--bar:94%;--n:12"></i><i style="--bar:69%;--n:13"></i><i style="--bar:40%;--n:14"></i><i style="--bar:66%;--n:15"></i><i style="--bar:88%;--n:16"></i><i style="--bar:57%;--n:17"></i><i style="--bar:36%;--n:18"></i><i style="--bar:64%;--n:19"></i><i style="--bar:43%;--n:20"></i><i style="--bar:25%;--n:21"></i><i style="--bar:39%;--n:22"></i><i style="--bar:16%;--n:23"></i></div><span class="visual-caption scene-caption">3D / МИКРОФОН · ЗВУК · АУДИОКНИГА</span></div>
             <div class="card-body"><h3>ReVoice</h3><p>Локальная студия синтеза речи и создания аудиокниг. Твой голос, твой компьютер, без подписок.</p><div class="card-footer"><span class="tech-label">Python · Tauri · Qwen3-TTS</span><a class="icon-link" href="https://github.com/remageht/ReVoice" target="_blank" rel="noopener noreferrer" aria-label="Открыть проект ReVoice"><svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></a></div></div>
           </article>
 
           <article class="project-card devops-card span-4" data-reveal>
             <div class="card-top"><span class="category">05 / ИНФРАСТРУКТУРА</span><svg class="icon muted-icon" aria-hidden="true"><use href="#icon-terminal"/></svg></div>
-            <div class="terminal-visual" aria-hidden="true"><div class="terminal-dots"><i></i><i></i><i></i><span>infrastructure</span></div><p><span>$</span> docker compose up</p><div class="terminal-row"><span>app</span><b>running</b></div><div class="terminal-row"><span>prometheus</span><b>running</b></div><div class="terminal-row"><span>grafana</span><b>running</b></div><span class="terminal-footnote">ИЛЛЮСТРАЦИЯ СТЕКА</span></div>
+            <div class="terminal-visual object-stage" data-model="devops" aria-hidden="true"><div class="terminal-dots"><i></i><i></i><i></i><span>infrastructure</span></div><p><span>$</span> docker compose up</p><div class="terminal-row"><span>app</span><b>running</b></div><div class="terminal-row"><span>prometheus</span><b>running</b></div><div class="terminal-row"><span>grafana</span><b>running</b></div><span class="terminal-footnote">ИЛЛЮСТРАЦИЯ СТЕКА</span><span class="scene-caption">3D / СЕРВЕРЫ · СЕТЬ · ДАННЫЕ</span></div>
             <div class="card-body"><h3>Personal DevOps</h3><p>Контейнеры, метрики, логи и резервные копии. Инфраструктура под контролем.</p><div class="card-footer"><span class="tech-label">Docker · FastAPI · Grafana</span><a class="icon-link" href="https://github.com/remageht/personal-devops-platform" target="_blank" rel="noopener noreferrer" aria-label="Открыть Personal DevOps Platform"><svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></a></div></div>
           </article>
 
           <article class="project-card trade-card span-4" data-reveal>
             <div class="card-top"><span class="category">06 / ДЛЯ БИЗНЕСА</span><svg class="icon muted-icon" aria-hidden="true"><use href="#icon-box"/></svg></div>
-            <div class="trade-visual" aria-hidden="true"><svg viewBox="0 0 260 125"><path class="trade-line" d="M36 83h60V42h74v41h52"/><rect x="12" y="60" width="48" height="48" rx="10"/><path d="m22 74 14 8 14-8m-14 8v16"/><rect x="106" y="18" width="48" height="48" rx="10"/><path d="M116 34h28v19h-28zM126 58h8"/><rect x="198" y="60" width="48" height="48" rx="10"/><path d="M211 72h22v24h-22zM217 91h10"/></svg><span class="visual-caption">СКЛАД ↔ МАГАЗИН ↔ ПРОДАЖИ</span></div>
+            <div class="trade-visual object-stage" data-model="trade" aria-hidden="true"><svg viewBox="0 0 260 125"><path class="trade-line" d="M36 83h60V42h74v41h52"/><rect x="12" y="60" width="48" height="48" rx="10"/><path d="m22 74 14 8 14-8m-14 8v16"/><rect x="106" y="18" width="48" height="48" rx="10"/><path d="M116 34h28v19h-28zM126 58h8"/><rect x="198" y="60" width="48" height="48" rx="10"/><path d="M211 72h22v24h-22zM217 91h10"/></svg><span class="visual-caption scene-caption">3D / ПОСЫЛКА · КАССА · КОМПОНЕНТЫ</span></div>
             <div class="card-body"><h3>Торговые инструменты</h3><p>TelePort — мобильный склад и продажи. Телемастер — магазин радиокомпонентов.</p><div class="trade-links"><a href="https://github.com/remageht/Teleport" target="_blank" rel="noopener noreferrer">TelePort <svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></a><a href="https://remageht.github.io/telemaster/" target="_blank" rel="noopener noreferrer">Телемастер <svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></a></div></div>
           </article>
 
           <article class="project-card namaz-card span-4" data-reveal>
             <div class="card-top"><span class="category">07 / НА КАЖДЫЙ ДЕНЬ</span><svg class="icon muted-icon" aria-hidden="true"><use href="#icon-moon"/></svg></div>
-            <div class="namaz-visual" aria-hidden="true"><div class="compass"><span class="compass-n">N</span><span class="compass-s">S</span><span class="compass-w">W</span><span class="compass-e">E</span><span class="compass-needle"></span><span class="compass-center"></span></div><span class="visual-caption">ВРЕМЯ · НАПРАВЛЕНИЕ · ЗНАНИЯ</span></div>
+            <div class="namaz-visual object-stage" data-model="namaz" aria-hidden="true"><div class="compass"><span class="compass-n">N</span><span class="compass-s">S</span><span class="compass-w">W</span><span class="compass-e">E</span><span class="compass-needle"></span><span class="compass-center"></span></div><span class="visual-caption scene-caption">3D / КОМПАС КИБЛЫ · ЧАСЫ</span></div>
             <div class="card-body"><h3>Намаз</h3><p>Время молитв, направление Киблы и пошаговые уроки. В браузере и на твоих устройствах.</p><div class="card-footer"><span class="tech-label">PWA · Android · Windows</span><a class="icon-link" href="https://remageht.github.io/namaz-vakit/" target="_blank" rel="noopener noreferrer" aria-label="Открыть приложение Намаз"><svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></a></div></div>
           </article>
 
           <article class="project-card eden-card span-12" data-reveal>
             <div class="eden-copy"><span class="category">08 / ЭКСПЕРИМЕНТЫ</span><h3>Terraform Eden</h3><p>Из пустоши — в живой мир. Браузерная игра о терраформировании, эволюции и маленьких шагах к большим переменам.</p><a class="project-link" href="https://remageht.github.io/terraform-eden/" target="_blank" rel="noopener noreferrer" aria-label="Играть в Terraform Eden">Вырастить свой мир <svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></a></div>
-            <div class="eden-visual" aria-hidden="true"><div class="eden-orbit orbit-one"></div><div class="eden-orbit orbit-two"></div><div class="eden-core"><svg class="icon"><use href="#icon-leaf"/></svg></div><span class="eden-stage stage-one">01 / ДНК</span><span class="eden-stage stage-two">02 / БИОСФЕРА</span><span class="eden-stage stage-three">03 / ЦИВИЛИЗАЦИЯ</span></div>
+            <div class="eden-visual object-stage" data-model="eden" aria-hidden="true"><div class="eden-orbit orbit-one"></div><div class="eden-orbit orbit-two"></div><div class="eden-core"><svg class="icon"><use href="#icon-leaf"/></svg></div><span class="eden-stage stage-one">01 / ДНК</span><span class="eden-stage stage-two">02 / БИОСФЕРА</span><span class="eden-stage stage-three">03 / ЦИВИЛИЗАЦИЯ</span><span class="scene-caption">3D / ПЛАНЕТА · БИОСФЕРА · ДНК</span></div>
           </article>
         </div>
       </section>

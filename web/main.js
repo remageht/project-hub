@@ -16,10 +16,14 @@ const revealObserver = new IntersectionObserver((entries) => {
 for (const card of cards) revealObserver.observe(card);
 
 function updateMotion() {
-  root.dataset.motion = motionEnabled ? 'on' : 'off';
-  root.classList.toggle('js-motion', motionEnabled);
-  motionButton.setAttribute('aria-pressed', String(motionEnabled));
-  motionButton.firstChild.textContent = `Анимация: ${motionEnabled ? 'вкл' : 'выкл'} `;
+  const enabled = motionEnabled && !motionPreference.matches;
+  root.dataset.motion = enabled ? 'on' : 'off';
+  root.classList.toggle('js-motion', enabled);
+  motionButton.disabled = motionPreference.matches;
+  motionButton.title = motionPreference.matches ? 'Анимация отключена настройкой системы' : '';
+  motionButton.setAttribute('aria-pressed', String(enabled));
+  motionButton.firstChild.textContent = `Анимация: ${enabled ? 'вкл' : 'выкл'} `;
+  document.dispatchEvent(new CustomEvent('site:motionchange', { detail: { enabled } }));
 }
 
 motionButton.addEventListener('click', () => {
