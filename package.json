@@ -1,0 +1,15 @@
+{
+  "name": "emir-project-hub",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Emir Lab — a personal hub of real applications, games and DevOps projects.",
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/serve.mjs",
+    "build": "node scripts/build.mjs",
+    "check": "node --check web/main.js && node --check scripts/serve.mjs && node --check scripts/build.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

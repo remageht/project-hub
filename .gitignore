@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.qoder/
+*.qoder.site
+.env
+.env.*
+*.log
