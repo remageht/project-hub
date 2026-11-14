@@ -351,6 +351,81 @@ function makeEden() {
   return { group, rotation: [0.03, -0.05, 0.04], animate(time) { planet.rotation.y = time * 0.09; dna.rotation.y = time * 0.2; probe.position.y = -0.54 + Math.sin(time * 0.75) * 0.045; } };
 }
 
+function starShape(radius, waist, points = 4) {
+  const shape = new THREE.Shape();
+  for (let index = 0; index < points; index++) {
+    const start = index / points * Math.PI * 2 - Math.PI / 2;
+    const next = start + Math.PI / points;
+    const outer = [Math.cos(start) * radius, Math.sin(start) * radius];
+    const control = [Math.cos(next) * waist, Math.sin(next) * waist];
+    const target = [Math.cos(next + Math.PI / points) * radius, Math.sin(next + Math.PI / points) * radius];
+    if (!index) shape.moveTo(...outer);
+    else shape.lineTo(...outer);
+    shape.quadraticCurveTo(...control, ...target);
+  }
+  shape.closePath();
+  return shape;
+}
+
+function makeCycle() {
+  const group = new THREE.Group();
+  const silver = material(palette.metal, { metalness: 0.9, roughness: 0.17 });
+  const accent = material('#ff7a45', { metalness: 0.85, roughness: 0.26 });
+  const teal = material(palette.teal, { metalness: 0.5, roughness: 0.3, emissive: '#1d5c48', emissiveIntensity: 0.4 });
+  const grey = material('#707a86', { metalness: 0.75, roughness: 0.33 });
+
+  const orbit = new THREE.Group(); group.add(orbit);
+  orbit.rotation.set(1.12, 0, -0.24);
+  ring(orbit, 1, 0.022, silver);
+  const nodes = [
+    { tilt: 0.42, build: node => mesh(node, new THREE.IcosahedronGeometry(0.12, 1), material('#ff7a45', { metalness: 0.85, roughness: 0.24, flatShading: true })) },
+    { tilt: 0.58, build: node => box(node, [0.195, 0.195, 0.195], silver, [0, 0, 0], 0.022) },
+    { tilt: 1.18, build: node => ring(node, 0.115, 0.032, teal) },
+  ].map(({ tilt, build }, index) => {
+    const pivot = new THREE.Group(); orbit.add(pivot);
+    pivot.rotation.z = index / 3 * Math.PI * 2;
+    const node = new THREE.Group(); pivot.add(node);
+    node.position.set(1, 0, 0);
+    return { pivot, node, tilt, part: build(node) };
+  });
+
+  const cycle = new THREE.Group(); group.add(cycle);
+  cycle.rotation.set(1.02, 0.34, 0.52);
+  const sweep = Math.PI * 1.42;
+  ring(cycle, 1.19, 0.009, grey, [0, 0, 0], sweep);
+  const arrow = mesh(cycle, new THREE.ConeGeometry(0.05, 0.15, 48), grey, [Math.cos(sweep) * 1.19, Math.sin(sweep) * 1.19, 0]);
+  arrow.rotation.z = sweep;
+
+  const core = new THREE.Group(); group.add(core);
+  const spark = mesh(core, new THREE.ExtrudeGeometry(starShape(0.37, 0.09), { depth: 0.07, bevelEnabled: true, bevelThickness: 0.02, bevelSize: 0.02, bevelSegments: 3, curveSegments: 32 }), accent, [0, 0, -0.035]);
+  ring(core, 0.53, 0.007, basic('#ffb894'));
+
+  const satellite = new THREE.Group(); group.add(satellite);
+  satellite.rotation.set(1.34, 0.22, 0);
+  sphere(satellite, 0.05, basic('#ff885b'), [0.75, 0, 0], 48);
+
+  return {
+    group, rotation: [0, 0, 0], fit: 0.72,
+    animate(time, intro = 1) {
+      const ease = 1 - Math.pow(1 - intro, 3);
+      group.scale.setScalar(0.58 + 0.42 * ease);
+      group.position.y = Math.sin(time * 0.65) * 0.035 * ease - (1 - ease) * 0.6;
+      const spin = time * 0.26 - (1 - ease) * 2.4;
+      orbit.rotation.z = spin;
+      nodes.forEach(({ pivot, node, part, tilt }, index) => {
+        node.rotation.z = -(spin + pivot.rotation.z);
+        part.rotation.y = time * (0.55 + index * 0.12);
+        part.rotation.x = tilt + Math.sin(time * 0.6 + pivot.rotation.z) * 0.32;
+      });
+      core.rotation.z = time * 0.11;
+      core.rotation.y = Math.sin(time * 0.45) * 0.3;
+      spark.scale.setScalar(1 + Math.sin(time * 1.7) * 0.04);
+      satellite.rotation.z = -time * 0.62;
+      cycle.rotation.z = Math.sin(time * 0.21) * 0.09;
+    }
+  };
+}
+
 function studioEnvironment(renderer) {
   const studio = new THREE.Scene();
   studio.background = new THREE.Color('#596473');
@@ -383,7 +458,7 @@ function startObjects() {
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.autoClear = false;
   let environment = studioEnvironment(renderer);
-  const factories = { astro: makeAstro, chip: makeChip, hush: makeHush, voice: makeVoice, devops: makeDevops, trade: makeTrade, namaz: makeNamaz, eden: makeEden };
+  const factories = { cycle: makeCycle, astro: makeAstro, chip: makeChip, hush: makeHush, voice: makeVoice, devops: makeDevops, trade: makeTrade, namaz: makeNamaz, eden: makeEden };
   const views = stages.map(stage => {
     const model = factories[stage.dataset.model]();
     const scene = new THREE.Scene();
@@ -396,7 +471,8 @@ function startObjects() {
     model.group.rotation.set(...model.rotation);
     model.animate(0);
     const bounds = new THREE.Box3().setFromObject(model.group).getSize(new THREE.Vector3());
-    return { stage, model, scene, camera, bounds, visible: false, time: 0, pointer: new THREE.Vector2(), tilt: new THREE.Vector2() };
+    const owner = stage.closest('.project-card');
+    return { stage, model, scene, camera, bounds, owner, fit: model.fit ?? 1, idle: stage.hasAttribute('data-idle'), target: owner || stage.closest('.hero') || stage, introAt: 0, visible: false, time: 0, pointer: new THREE.Vector2(), tilt: new THREE.Vector2() };
   });
   const preference = matchMedia('(prefers-reduced-motion: reduce)');
   const coarsePointer = matchMedia('(pointer: coarse)');
@@ -424,24 +500,30 @@ function startObjects() {
       const ratio = Math.min(devicePixelRatio, coarsePointer.matches ? 1 : 1.5);
       if (canvas.width !== Math.round(width * ratio) || canvas.height !== Math.round(height * ratio)) { renderer.setPixelRatio(ratio); renderer.setSize(width, height, false); }
       const rectangles = visible.map(view => ({ view, rect: view.stage.getBoundingClientRect() }));
-      const active = hovered ?? rectangles.filter(({ rect }) => rect.bottom > 0 && rect.top < height).sort((a, b) => Math.abs(a.rect.top + a.rect.height / 2 - height / 2) - Math.abs(b.rect.top + b.rect.height / 2 - height / 2))[0]?.view;
+      const active = hovered ?? rectangles.filter(({ view, rect }) => !view.idle && rect.bottom > 0 && rect.top < height).sort((a, b) => Math.abs(a.rect.top + a.rect.height / 2 - height / 2) - Math.abs(b.rect.top + b.rect.height / 2 - height / 2))[0]?.view;
       renderer.setScissorTest(false); renderer.setViewport(0, 0, width, height); renderer.clear(); renderer.setScissorTest(true);
       for (const { view, rect } of rectangles) {
-        const captionHeight = view.stage.querySelector('.scene-caption').getBoundingClientRect().height;
+        const caption = view.stage.querySelector('.scene-caption');
+        const captionHeight = caption ? caption.getBoundingClientRect().height : 0;
         const viewHeight = rect.height - Math.max(25, captionHeight + 12);
         if (rect.width <= 0 || viewHeight <= 0 || rect.bottom < 0 || rect.top > height) continue;
-        if (getComputedStyle(view.stage.closest('.project-card')).opacity < 0.95) continue;
-        if (speed > 0 && active === view) {
+        if (view.owner && getComputedStyle(view.owner).opacity < 0.95) continue;
+        if (speed > 0 && (view.idle || active === view)) {
           view.time += delta * speed;
           view.tilt.lerp(view.pointer, 0.085);
           view.model.group.rotation.x = view.model.rotation[0] + view.tilt.y * 0.15;
           view.model.group.rotation.y = view.model.rotation[1] + view.tilt.x * 0.2;
           view.model.group.position.y = Math.sin(view.time * 0.65) * 0.035;
         }
-        view.model.animate(view.time);
+        let intro = 1;
+        if (view.idle && speed > 0) {
+          if (!view.introAt) view.introAt = timestamp;
+          intro = Math.min(1, Math.max(0, (timestamp - view.introAt - 380) / 1000));
+        }
+        view.model.animate(view.time, intro);
         view.camera.aspect = rect.width / viewHeight;
         const fittedSize = Math.max(view.bounds.y, view.bounds.x / view.camera.aspect);
-        view.camera.position.z = fittedSize * 1.25 / (2 * Math.tan(THREE.MathUtils.degToRad(view.camera.fov / 2))) + view.bounds.z * 0.45;
+        view.camera.position.z = (fittedSize * 1.25 / (2 * Math.tan(THREE.MathUtils.degToRad(view.camera.fov / 2))) + view.bounds.z * 0.45) * view.fit;
         view.camera.updateProjectionMatrix();
         const bottom = height - rect.top - viewHeight;
         const left = Math.max(0, rect.left), low = Math.max(0, bottom);
@@ -451,7 +533,7 @@ function startObjects() {
         renderer.setScissor(left, low, right - left, high - low);
         renderer.render(view.scene, view.camera);
         view.stage.classList.add('scene-ready');
-        view.stage.closest('.project-card').classList.add('has-3d');
+        view.owner?.classList.add('has-3d');
       }
       lastDraw = timestamp; dirty = false;
     }
@@ -464,7 +546,7 @@ function startObjects() {
   }, { rootMargin: '50px' });
   views.forEach(view => {
     observer.observe(view.stage);
-    const card = view.stage.closest('.project-card');
+    const card = view.target;
     card.addEventListener('pointermove', event => {
       if (coarsePointer.matches || !motionScale()) return;
       const rect = view.stage.getBoundingClientRect();
@@ -482,7 +564,7 @@ function startObjects() {
   window.addEventListener('scroll', refresh, { passive: true });
   window.addEventListener('resize', refresh, { passive: true });
   document.addEventListener('visibilitychange', () => { if (document.hidden) { cancelAnimationFrame(frame); frame = 0; } else refresh(); });
-  canvas.addEventListener('webglcontextlost', event => { event.preventDefault(); contextLost = true; cancelAnimationFrame(frame); frame = 0; canvas.style.visibility = 'hidden'; views.forEach(view => { view.stage.classList.remove('scene-ready'); view.stage.closest('.project-card').classList.remove('has-3d'); }); });
+  canvas.addEventListener('webglcontextlost', event => { event.preventDefault(); contextLost = true; cancelAnimationFrame(frame); frame = 0; canvas.style.visibility = 'hidden'; views.forEach(view => { view.stage.classList.remove('scene-ready'); view.owner?.classList.remove('has-3d'); }); });
   canvas.addEventListener('webglcontextrestored', () => { environment.dispose(); environment = studioEnvironment(renderer); views.forEach(view => { view.scene.environment = environment.texture; }); contextLost = false; canvas.style.visibility = ''; refresh(); });
   window.addEventListener('pagehide', event => {
     if (event.persisted) return;

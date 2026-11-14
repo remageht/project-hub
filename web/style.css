@@ -38,7 +38,7 @@ h1, h2, h3 { overflow-wrap: anywhere; }
 .skip-link { position: fixed; top: 12px; left: 12px; z-index: 10; padding: 14px 20px; background: var(--site-accent); color: var(--site-on-accent); border-radius: var(--site-radius); transform: translateY(-180%); }
 .skip-link:focus { transform: translateY(0); }
 
-.site-header { display: flex; align-items: center; justify-content: space-between; min-height: 104px; border-bottom: 1px solid var(--site-border); gap: 24px; }
+.site-header { position: relative; display: flex; align-items: center; justify-content: space-between; min-height: 104px; border-bottom: 1px solid var(--site-border); gap: 24px; }
 .wordmark { display: inline-flex; gap: 12px; align-items: center; font-size: calc(15px * var(--site-type, 1)); font-weight: 750; letter-spacing: .035em; }
 .brand-mark { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 10px; color: var(--site-accent); background: var(--site-surface); font-size: 29px; line-height: 1; letter-spacing: -.14em; padding: 0 5px 5px 0; }
 .wordmark-divider { margin: 0 8px; color: var(--site-muted); font-weight: 400; }
@@ -48,13 +48,15 @@ h1, h2, h3 { overflow-wrap: anywhere; }
 .github-nav { color: var(--site-muted); }
 .github-nav .icon { width: 15px; height: 15px; }
 
-.hero { display: grid; grid-template-columns: minmax(0, 1fr) 300px; align-items: end; gap: 52px; padding: calc(72px * var(--site-space, 1)) 0 calc(70px * var(--site-space, 1)); }
+.hero { display: grid; grid-template-columns: minmax(0, 1fr) 320px; align-items: end; gap: 52px; padding: calc(72px * var(--site-space, 1)) 0 calc(70px * var(--site-space, 1)); }
 .eyebrow { color: var(--site-muted); font-size: calc(12px * var(--site-type, 1)); font-weight: 600; letter-spacing: .12em; }
 .hero .eyebrow { display: flex; align-items: center; gap: 12px; margin-bottom: 25px; }
 .tiny-cross { color: var(--site-accent); font-size: 20px; line-height: 1; }
 .hero-main { min-width: 0; }
 h1 { overflow-wrap: anywhere; font-size: clamp(42px, 5.05vw, 72px); font-size: calc(clamp(42px, 5.05vw, 72px) * var(--site-type, 1)); line-height: 1.08; font-weight: 650; letter-spacing: -.065em; }
 .hero-emphasis { color: var(--site-accent); }
+.hero-line { display: block; overflow: hidden; padding-bottom: .14em; margin-bottom: -.14em; }
+.hero-line > span { display: block; }
 .hero-aside { padding-bottom: 3px; }
 .hero-aside p { color: var(--site-muted); font-size: calc(15px * var(--site-type, 1)); line-height: 1.75; max-width: 300px; }
 .hero-cta { display: inline-flex; align-items: center; gap: 18px; min-height: 48px; margin-top: 20px; font-size: calc(14px * var(--site-type, 1)); font-weight: 600; }
@@ -65,6 +67,9 @@ h1 { overflow-wrap: anywhere; font-size: clamp(42px, 5.05vw, 72px); font-size: c
 .glyph-ring { position: absolute; left: 12px; top: 1px; width: 64px; height: 44px; border: 1px solid var(--site-border); border-radius: 50%; transform: rotate(-26deg); }
 .glyph-dot { position: absolute; width: 5px; height: 5px; border-radius: 50%; background: var(--site-accent); left: 67px; top: 14px; }
 .glyph-caption { position: absolute; left: 98px; top: 15px; font-size: 10px; letter-spacing: .095em; color: var(--site-muted); }
+.hero-stage { height: calc(196px * var(--site-space, 1)); margin-bottom: calc(12px * var(--site-space, 1)); }
+.hero-stage .lab-glyph { position: absolute; left: 0; right: 0; top: 50%; margin: -32px 0 0; }
+.hero-stage > .scene-caption { position: absolute; bottom: 0; left: 0; right: 0; text-align: center; color: var(--site-muted); font-size: calc(9px * var(--site-type, 1)); line-height: 1.5; letter-spacing: .09em; }
 
 .section-heading { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-bottom: calc(24px * var(--site-space, 1)); }
 .section-heading h2 { font-size: calc(17px * var(--site-type, 1)); letter-spacing: -.02em; font-weight: 600; display: flex; align-items: center; gap: 12px; }
@@ -219,6 +224,19 @@ h1 { overflow-wrap: anywhere; font-size: clamp(42px, 5.05vw, 72px); font-size: c
 
 .js-motion [data-reveal]:not(.is-visible) { opacity: 0; transform: translateY(16px); }
 .js-motion [data-reveal] { transition: opacity calc(360ms * var(--site-motion, 1)) var(--ease), transform calc(360ms * var(--site-motion, 1)) var(--ease), border-color var(--duration); }
+@keyframes intro-rise { from { opacity: 0; transform: translateY(18px); } }
+@keyframes intro-line { from { transform: translateY(118%); } }
+@keyframes intro-fade { from { opacity: 0; } }
+@keyframes rule-sweep { 0% { transform: scaleX(0); opacity: 1; } 62% { transform: scaleX(1); opacity: .8; } 100% { transform: scaleX(1); opacity: 0; } }
+.js-motion .site-header { animation: intro-fade calc(520ms * var(--site-motion, 1)) var(--ease) both; }
+.js-motion .site-header::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px; transform-origin: left; background: linear-gradient(90deg, var(--site-accent), transparent 62%); animation: rule-sweep calc(1100ms * var(--site-motion, 1)) var(--ease) calc(160ms * var(--site-motion, 1)) both; }
+.js-motion .hero .eyebrow { animation: intro-rise calc(620ms * var(--site-motion, 1)) var(--ease) calc(110ms * var(--site-motion, 1)) both; }
+.js-motion .hero-line > span { animation: intro-line calc(760ms * var(--site-motion, 1)) var(--ease) calc(190ms * var(--site-motion, 1)) both; }
+.js-motion .hero-line:nth-child(2) > span { animation-delay: calc(310ms * var(--site-motion, 1)); }
+.js-motion .hero-stage .lab-glyph { animation: intro-fade calc(700ms * var(--site-motion, 1)) var(--ease) calc(420ms * var(--site-motion, 1)) both; }
+.js-motion .hero-stage > .scene-caption { animation: intro-fade calc(600ms * var(--site-motion, 1)) var(--ease) calc(820ms * var(--site-motion, 1)) both; }
+.js-motion .hero-aside p { animation: intro-rise calc(700ms * var(--site-motion, 1)) var(--ease) calc(430ms * var(--site-motion, 1)) both; }
+.js-motion .hero-cta { animation: intro-rise calc(700ms * var(--site-motion, 1)) var(--ease) calc(540ms * var(--site-motion, 1)) both; }
 @keyframes waveform { 50% { transform: scaleY(.7); } }
 @keyframes transfer { 50% { transform: translate(7px, -2px) rotate(45deg); opacity: .5; } }
 @media (hover: hover) and (pointer: fine) {
@@ -232,6 +250,7 @@ html[data-motion="off"] *, html[data-motion="off"] *::before, html[data-motion="
 @media (max-width: 1100px) {
   .site-shell { width: calc(100% - 64px); }
   .hero { grid-template-columns: minmax(0, 1fr) 260px; gap: 32px; }
+  .hero-stage { height: calc(172px * var(--site-space, 1)); }
   h1 { font-size: calc(52px * var(--site-type, 1)); }
   :root { --card-padding: calc(23px * var(--site-space, 1)); }
   .tech-label { font-size: calc(10px * var(--site-type, 1)); }
@@ -248,9 +267,11 @@ html[data-motion="off"] *, html[data-motion="off"] *::before, html[data-motion="
 @media (max-width: 850px) {
   .hero { grid-template-columns: 1fr; padding: calc(54px * var(--site-space, 1)) 0; gap: 28px; }
   h1 { font-size: calc(58px * var(--site-type, 1)); max-width: 690px; }
-  .hero-aside { display: flex; gap: 32px; align-items: center; }
+  .hero-aside { display: grid; grid-template-columns: 172px minmax(0, 1fr); align-items: center; gap: 12px 26px; }
   .hero-aside p { max-width: 480px; }
-  .lab-glyph { display: none; }
+  .hero-stage { grid-row: span 2; height: 142px; margin-bottom: 0; }
+  .hero-stage > .scene-caption { font-size: calc(8px * var(--site-type, 1)); letter-spacing: .06em; }
+  .hero-stage .glyph-caption { display: none; }
   .hero-cta { margin-top: 0; white-space: nowrap; }
   .span-8 { grid-column: span 12; }
   .span-4 { grid-column: span 6; }
@@ -291,6 +312,8 @@ html[data-motion="off"] *, html[data-motion="off"] *::before, html[data-motion="
   .hero .eyebrow { font-size: calc(9px * var(--site-type, 1)); letter-spacing: .1em; margin-bottom: 21px; gap: 8px; }
   h1 { font-size: calc(clamp(37px, 10.4vw, 56px) * var(--site-type, 1)); line-height: 1.12; letter-spacing: -.055em; }
   .hero-aside { display: block; }
+  .hero-stage { height: 152px; margin-bottom: 12px; }
+  .hero-stage .glyph-caption { display: block; }
   .hero-aside p { font-size: calc(15px * var(--site-type, 1)); line-height: 1.75; max-width: 360px; }
   .hero-cta { margin-top: 12px; font-size: calc(14px * var(--site-type, 1)); }
   .section-heading { margin-bottom: 18px; }
