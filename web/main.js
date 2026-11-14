@@ -8,13 +8,19 @@ const heroTitle = document.querySelector('#hero-title');
 const emphasis = document.querySelector('.hero-emphasis');
 const footer = document.querySelector('.site-footer');
 const noteLines = [...document.querySelectorAll('.note-line')];
+const aboutSection = document.querySelector('.about-section');
+const verb = document.querySelector('.about-verb');
+const projectTints = ['--site-accent', '--project-teal', '--project-blue', '--project-green', '--project-purple'];
 const heroLetters = [];
+const verbLetters = [];
 let heroSplit = false;
+let verbForged = false;
 let heroBounds;
 let heroFrame;
 let heroX;
 let heroY;
 let replayAt = 0;
+let verbReplayAt = 0;
 let noteIndex = 0;
 let scrollFrame = 0;
 
@@ -39,6 +45,7 @@ function updateMotion() {
   motionButton.firstChild.textContent = `Анимация: ${enabled ? 'вкл' : 'выкл'} `;
   if (!enabled) hero.style.setProperty('--sheen', '0');
   if (enabled) splitHeroWord();
+  if (enabled) forgeVerb();
   document.dispatchEvent(new CustomEvent('site:motionchange', { detail: { enabled } }));
 }
 
@@ -88,28 +95,52 @@ for (const card of cards) {
   });
 }
 
+function splitWord(word, className, letters, tints) {
+  const text = word.textContent;
+  const spoken = document.createElement('span');
+  spoken.className = 'visually-hidden';
+  spoken.textContent = text;
+  word.textContent = '';
+  word.classList.add('is-split');
+  word.setAttribute('aria-hidden', 'true');
+
+  for (const [index, letter] of [...text].entries()) {
+    const node = document.createElement('span');
+    node.className = className;
+    node.style.setProperty('--i', String(index));
+    if (tints) node.style.setProperty('--tint', `var(${tints[index % tints.length]})`);
+    node.textContent = letter;
+    word.append(node);
+    letters.push(node);
+  }
+
+  word.before(spoken);
+}
+
 function splitHeroWord() {
   if (heroSplit || !emphasis) return;
   heroSplit = true;
-  const word = emphasis.textContent;
-  const spoken = document.createElement('span');
-  spoken.className = 'visually-hidden';
-  spoken.textContent = word;
-  emphasis.textContent = '';
-  emphasis.classList.add('is-split');
-  emphasis.setAttribute('aria-hidden', 'true');
-
-  for (const [index, letter] of [...word].entries()) {
-    const node = document.createElement('span');
-    node.className = 'hero-letter';
-    node.style.setProperty('--i', String(index));
-    node.textContent = letter;
-    emphasis.append(node);
-    heroLetters.push(node);
-  }
-
-  emphasis.before(spoken);
+  splitWord(emphasis, 'hero-letter', heroLetters);
 }
+
+function forgeVerb() {
+  if (verbForged || !verb || !motionEnabled) return;
+  const box = verb.getBoundingClientRect();
+  if (box.bottom <= 0 || box.top >= innerHeight) return;
+  verbForged = true;
+  splitWord(verb, 'ink', verbLetters, projectTints);
+  verb.classList.add('is-forging');
+}
+
+const forgeObserver = new IntersectionObserver((entries) => {
+  for (const entry of entries) {
+    if (!entry.isIntersecting) continue;
+    forgeVerb();
+    if (verbForged) forgeObserver.unobserve(entry.target);
+  }
+}, { threshold: 0.35 });
+
+if (aboutSection) forgeObserver.observe(aboutSection);
 
 hero?.addEventListener('pointerenter', () => {
   if (!motionEnabled || !precisePointer.matches) return;
@@ -148,6 +179,19 @@ heroTitle?.addEventListener('pointerenter', () => {
   for (const animation of animations) {
     animation.currentTime = start;
     animation.play();
+  }
+});
+
+verb?.addEventListener('pointerenter', () => {
+  if (!motionEnabled || !precisePointer.matches || !verbForged) return;
+  const now = performance.now();
+  if (now - verbReplayAt < 4000) return;
+  verbReplayAt = now;
+  for (const letter of verbLetters) {
+    for (const animation of letter.getAnimations()) {
+      animation.currentTime = 0;
+      animation.play();
+    }
   }
 });
 
