@@ -1,6 +1,7 @@
 node_modules/
 dist/
 web/vendor/
+lab/
 .qoder/
 *.qoder.site
 .env

@@ -37,6 +37,7 @@ h1, h2, h3 { overflow-wrap: anywhere; }
 .site-shell { width: min(100% - 96px, 1200px); margin: 0 auto; }
 .skip-link { position: fixed; top: 12px; left: 12px; z-index: 10; padding: 14px 20px; background: var(--site-accent); color: var(--site-on-accent); border-radius: var(--site-radius); transform: translateY(-180%); }
 .skip-link:focus { transform: translateY(0); }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
 .site-header { position: relative; display: flex; align-items: center; justify-content: space-between; min-height: 104px; border-bottom: 1px solid var(--site-border); gap: 24px; }
 .wordmark { display: inline-flex; gap: 12px; align-items: center; font-size: calc(15px * var(--site-type, 1)); font-weight: 750; letter-spacing: .035em; }
@@ -213,8 +214,16 @@ h1 { overflow-wrap: anywhere; font-size: clamp(42px, 5.05vw, 72px); font-size: c
 .about-copy p { max-width: 455px; font-size: calc(14px * var(--site-type, 1)); color: var(--site-muted); line-height: 1.8; }
 .text-link { display: inline-flex; align-items: center; gap: 12px; margin-top: 15px; min-height: 44px; font-size: calc(13px * var(--site-type, 1)); }
 .text-link .icon { width: 16px; height: 16px; color: var(--site-accent); }
-.site-footer { display: flex; align-items: center; gap: 26px; justify-content: space-between; min-height: 90px; border-top: 1px solid var(--site-border); font-size: calc(10px * var(--site-type, 1)); color: var(--site-muted); letter-spacing: .04em; }
-.footer-note { font-size: 9px; letter-spacing: .08em; margin-right: auto; margin-left: 30px; }
+.site-footer { position: relative; display: flex; align-items: center; gap: 26px; justify-content: space-between; min-height: 90px; border-top: 1px solid var(--site-border); font-size: calc(10px * var(--site-type, 1)); color: var(--site-muted); letter-spacing: .04em; }
+.site-footer::before { content: ""; position: absolute; top: -1px; left: 0; right: 0; height: 1px; transform: scaleX(var(--scroll, 0)); transform-origin: left; background: linear-gradient(90deg, var(--site-accent), color-mix(in srgb, var(--site-accent) 30%, transparent)); }
+.footer-stage { flex: none; width: 62px; height: 62px; }
+.footer-note { display: flex; align-items: center; gap: 10px; font-size: 9px; letter-spacing: .08em; margin-right: auto; margin-left: 30px; }
+.note-stack { display: grid; }
+.note-line { grid-area: 1 / 1; opacity: 0; transform: translateY(4px); transition: opacity calc(480ms * var(--site-motion, 1)) var(--ease), transform calc(480ms * var(--site-motion, 1)) var(--ease); }
+.note-line.is-active { opacity: 1; transform: none; }
+.status-dot { flex: none; width: 6px; height: 6px; border-radius: 50%; background: var(--site-accent); }
+@keyframes status-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgb(255 136 91 / .45); } 70% { box-shadow: 0 0 0 8px rgb(255 136 91 / 0); } }
+.js-motion .status-dot { animation: status-pulse calc(2800ms * var(--site-motion, 1)) var(--ease) infinite; }
 .motion-toggle { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; border: 0; padding: 0; background: transparent; color: var(--site-muted); font-size: calc(11px * var(--site-type, 1)); }
 .motion-toggle:hover { color: var(--site-fg); }
 .motion-indicator { width: 5px; height: 5px; border-radius: 50%; background: var(--site-accent); }
@@ -237,6 +246,34 @@ h1 { overflow-wrap: anywhere; font-size: clamp(42px, 5.05vw, 72px); font-size: c
 .js-motion .hero-stage > .scene-caption { animation: intro-fade calc(600ms * var(--site-motion, 1)) var(--ease) calc(820ms * var(--site-motion, 1)) both; }
 .js-motion .hero-aside p { animation: intro-rise calc(700ms * var(--site-motion, 1)) var(--ease) calc(430ms * var(--site-motion, 1)) both; }
 .js-motion .hero-cta { animation: intro-rise calc(700ms * var(--site-motion, 1)) var(--ease) calc(540ms * var(--site-motion, 1)) both; }
+@keyframes materialize {
+  from { -webkit-text-fill-color: transparent; -webkit-text-stroke-color: var(--site-accent); background-position: 0 0, 0 0; }
+  72% { -webkit-text-fill-color: transparent; -webkit-text-stroke-color: var(--site-accent); }
+  to { -webkit-text-fill-color: var(--site-accent); -webkit-text-stroke-color: transparent; background-position: 0 100%, 0 100%; }
+}
+.js-motion .hero-emphasis.is-split { -webkit-text-stroke: 1px transparent; }
+.js-motion .hero-emphasis.is-split .hero-letter {
+  display: inline-block;
+  padding: .22em .06em .3em;
+  margin: -.22em -.06em -.3em;
+  background-image:
+    linear-gradient(0deg, transparent 44%, rgba(255, 226, 208, .95) 48% 52%, transparent 56%),
+    linear-gradient(0deg, var(--site-accent) 50%, transparent 50.5%);
+  background-size: 100% 230%, 100% 230%;
+  background-position: 0 100%, 0 100%;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  text-shadow: calc(var(--px, 0) * 4px) calc(var(--py, 0) * 3px) 0 rgb(255 240 226 / calc(55% * var(--sheen, 0)));
+  animation: materialize calc(460ms * var(--site-motion, 1)) var(--ease) calc((560ms + var(--i) * 58ms) * var(--site-motion, 1)) both;
+}
+@property --sheen { syntax: '<number>'; initial-value: 0; inherits: true; }
+.hero { --px: 0; --py: 0; --sheen: 0; }
+@media (hover: hover) and (pointer: fine) {
+  .hero { transition: --sheen var(--duration) var(--ease); }
+  .js-motion .hero-main { transform: translate3d(calc(var(--px) * -6px), calc(var(--py) * -3px), 0); will-change: transform; }
+  .js-motion .hero-stage { transform: translate3d(calc(var(--px) * 8px), calc(var(--py) * 5px), 0); will-change: transform; }
+}
 @keyframes waveform { 50% { transform: scaleY(.7); } }
 @keyframes transfer { 50% { transform: translate(7px, -2px) rotate(45deg); opacity: .5; } }
 @media (hover: hover) and (pointer: fine) {
@@ -366,6 +403,7 @@ html[data-motion="off"] *, html[data-motion="off"] *::before, html[data-motion="
   .about-section h2 { font-size: calc(29px * var(--site-type, 1)); }
   .about-copy p { font-size: calc(15px * var(--site-type, 1)); }
   .site-footer { flex-wrap: wrap; padding: 15px 0; gap: 4px 20px; }
+  .footer-stage { display: none; }
   .site-footer > span { width: 100%; }
   .motion-toggle { margin-right: auto; }
 }

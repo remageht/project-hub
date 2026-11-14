@@ -426,6 +426,30 @@ function makeCycle() {
   };
 }
 
+function makeSpark() {
+  const group = new THREE.Group();
+  const accent = material('#ff7a45', { metalness: 0.85, roughness: 0.26 });
+  const silver = material(palette.metal, { metalness: 0.9, roughness: 0.17 });
+
+  const spark = mesh(group, new THREE.ExtrudeGeometry(starShape(0.4, 0.1), { depth: 0.08, bevelEnabled: true, bevelThickness: 0.02, bevelSize: 0.02, bevelSegments: 3, curveSegments: 24 }), accent, [0, 0, -0.04]);
+  const orbit = new THREE.Group(); group.add(orbit);
+  orbit.rotation.set(1.18, 0, 0.42);
+  ring(orbit, 0.62, 0.011, silver);
+  sphere(orbit, 0.05, basic('#ffb894'), [0.62, 0, 0], 32);
+
+  return {
+    group, rotation: [0.1, -0.2, 0], fit: 0.82,
+    animate(time, intro = 1) {
+      const ease = 1 - Math.pow(1 - intro, 3);
+      group.scale.setScalar(0.7 + 0.3 * ease);
+      group.position.y = Math.sin(time * 0.8) * 0.03 * ease - (1 - ease) * 0.4;
+      orbit.rotation.z = 0.42 + time * 0.34;
+      spark.rotation.z = -time * 0.16;
+      spark.scale.setScalar(1 + Math.sin(time * 1.5) * 0.05);
+    }
+  };
+}
+
 function studioEnvironment(renderer) {
   const studio = new THREE.Scene();
   studio.background = new THREE.Color('#596473');
@@ -458,7 +482,7 @@ function startObjects() {
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.autoClear = false;
   let environment = studioEnvironment(renderer);
-  const factories = { cycle: makeCycle, astro: makeAstro, chip: makeChip, hush: makeHush, voice: makeVoice, devops: makeDevops, trade: makeTrade, namaz: makeNamaz, eden: makeEden };
+  const factories = { cycle: makeCycle, spark: makeSpark, astro: makeAstro, chip: makeChip, hush: makeHush, voice: makeVoice, devops: makeDevops, trade: makeTrade, namaz: makeNamaz, eden: makeEden };
   const views = stages.map(stage => {
     const model = factories[stage.dataset.model]();
     const scene = new THREE.Scene();
