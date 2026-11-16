@@ -16,9 +16,6 @@ const verbLetters = [];
 let heroSplit = false;
 let verbForged = false;
 let heroBounds;
-let heroFrame;
-let heroX;
-let heroY;
 let replayAt = 0;
 let verbReplayAt = 0;
 let noteIndex = 0;
@@ -149,20 +146,12 @@ hero?.addEventListener('pointerenter', () => {
 
 hero?.addEventListener('pointermove', (event) => {
   if (!heroBounds || !motionEnabled || !precisePointer.matches) return;
-  heroX = (event.clientX - heroBounds.left) / heroBounds.width * 2 - 1;
-  heroY = (event.clientY - heroBounds.top) / heroBounds.height * 2 - 1;
-  if (heroFrame) return;
-  heroFrame = requestAnimationFrame(() => {
-    heroFrame = undefined;
-    hero.style.setProperty('--px', heroX.toFixed(3));
-    hero.style.setProperty('--py', heroY.toFixed(3));
-    hero.style.setProperty('--sheen', '1');
-  });
+  hero.style.setProperty('--px', (((event.clientX - heroBounds.left) / heroBounds.width) * 2 - 1).toFixed(3));
+  hero.style.setProperty('--py', (((event.clientY - heroBounds.top) / heroBounds.height) * 2 - 1).toFixed(3));
+  hero.style.setProperty('--sheen', '1');
 });
 
 hero?.addEventListener('pointerleave', () => {
-  if (heroFrame) cancelAnimationFrame(heroFrame);
-  heroFrame = undefined;
   heroBounds = undefined;
   hero.style.setProperty('--sheen', '0');
   hero.style.removeProperty('--px');

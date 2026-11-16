@@ -534,7 +534,7 @@ function startObjects() {
         if (view.owner && getComputedStyle(view.owner).opacity < 0.95) continue;
         if (speed > 0 && (view.idle || active === view)) {
           view.time += delta * speed;
-          view.tilt.lerp(view.pointer, 0.085);
+          view.tilt.lerp(view.pointer, 1 - Math.pow(1 - 0.085, delta * 60));
           view.model.group.rotation.x = view.model.rotation[0] + view.tilt.y * 0.15;
           view.model.group.rotation.y = view.model.rotation[1] + view.tilt.x * 0.2;
           view.model.group.position.y = Math.sin(view.time * 0.65) * 0.035;
@@ -575,7 +575,7 @@ function startObjects() {
       if (coarsePointer.matches || !motionScale()) return;
       const rect = view.stage.getBoundingClientRect();
       view.pointer.set(THREE.MathUtils.clamp((event.clientX - rect.left) / rect.width * 2 - 1, -1, 1), THREE.MathUtils.clamp((event.clientY - rect.top) / rect.height * 2 - 1, -1, 1));
-      hovered = view; schedule();
+      hovered = view; refresh();
     });
     card.addEventListener('pointerleave', () => { view.pointer.set(0, 0); hovered = undefined; refresh(); });
     card.addEventListener('focusin', () => { hovered = view; refresh(); });
