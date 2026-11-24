@@ -32,7 +32,7 @@
 
   <div class="site-shell">
     <header class="site-header">
-      <a class="wordmark" href="#top" aria-label="Emir Lab — начало страницы"><span class="brand-mark" aria-hidden="true">e.</span><span>EMIR<span class="wordmark-divider">/</span>LAB</span></a>
+      <a class="wordmark" href="#top"><span class="brand-mark">e.</span><span>EMIR<span class="wordmark-divider">/</span>LAB</span><span class="visually-hidden"> — начало страницы</span></a>
       <nav class="header-nav" aria-label="Основная навигация">
         <a href="#projects">Проекты</a>
         <a href="#about">Об авторе</a>
@@ -72,15 +72,15 @@
               <h3>Astro Voyager</h3>
               <p>Полёт среди звёзд, чёрные дыры и космические экспедиции. Интерактивный 3D-симулятор Вселенной.</p>
               <div class="card-actions">
-                <a class="project-link light-link" href="https://github.com/remageht/astro-voyager/releases" target="_blank" rel="noopener noreferrer" aria-label="Скачать Astro Voyager">Отправиться в полёт <svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></a>
-                <a class="icon-link" href="https://github.com/remageht/astro-voyager" target="_blank" rel="noopener noreferrer" aria-label="Исходники Astro Voyager на GitHub"><svg class="icon" aria-hidden="true"><use href="#icon-github"/></svg></a>
+                <a class="project-link light-link" href="https://github.com/remageht/astro-voyager/releases" target="_blank" rel="noopener noreferrer" aria-label="Отправиться в полёт — скачать Astro Voyager">Отправиться в полёт <svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></a>
+                <a class="icon-link" href="https://github.com/remageht/astro-voyager" target="_blank" rel="noopener noreferrer" aria-label="Исходники Astro Voyager на GitHub" data-tooltip="Исходники на GitHub · новая вкладка"><svg class="icon" aria-hidden="true"><use href="#icon-github"/></svg></a>
               </div>
             </div>
             <span class="image-credit">СНИМОК ИЗ ПРИЛОЖЕНИЯ / SGR A*</span>
           </article>
 
           <article class="project-card hush-card span-4" data-reveal>
-            <div class="card-top"><span class="category">02 / ИНСТРУМЕНТЫ</span><span class="status-label">ALPHA</span></div>
+            <div class="card-top"><span class="category">02 / ИНСТРУМЕНТЫ</span><button class="status-label" type="button" popovertarget="alpha-popover" aria-expanded="false" aria-controls="alpha-popover" aria-label="ALPHA — статус проекта HushDrop">ALPHA</button><div class="info-popover" id="alpha-popover" popover><button class="popover-close" type="button">Закрыть</button><p class="popover-title">Ранняя версия</p><p>HushDrop ещё развивается: интерфейс и стабильность могут меняться.</p><a href="https://github.com/remageht/HushDrop" target="_blank" rel="noopener noreferrer">Открыть репозиторий <svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></a></div></div>
             <div class="transfer-visual object-stage" data-model="hush" aria-hidden="true">
               <div class="device device-phone"><span></span></div>
               <div class="transfer-path"><span class="transfer-packet"></span><span class="transfer-packet"></span><span class="transfer-packet"></span></div>
@@ -90,26 +90,26 @@
             <div class="card-body">
               <h3><img class="title-icon" src="./assets/hushdrop.webp" alt="" width="28" height="28">HushDrop</h3>
               <p>Файлы с телефона на ПК — по Wi-Fi, без облака и мессенджеров.</p>
-              <div class="card-footer"><span class="tech-label">Go · React · LAN</span><a class="icon-link" href="https://github.com/remageht/HushDrop" target="_blank" rel="noopener noreferrer" aria-label="Открыть проект HushDrop"><svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></a></div>
+              <div class="card-footer"><span class="tech-label">Go · React · <span class="tech-term" tabindex="0" data-tooltip="LAN — передача по локальной сети, без интернета и облака">LAN</span></span><a class="icon-link" href="https://github.com/remageht/HushDrop" target="_blank" rel="noopener noreferrer" aria-label="Открыть проект HushDrop" data-tooltip="Открыть проект HushDrop · новая вкладка"><svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></a></div>
             </div>
           </article>
 
           <article class="project-card mikro-card span-6" data-reveal>
             <div class="card-top"><span class="category">03 / ИНЖЕНЕРИЯ</span><svg class="icon muted-icon" aria-hidden="true"><use href="#icon-chip"/></svg></div>
             <div class="mikro-visual object-stage" data-model="chip"><img src="./assets/mikrolab.webp" alt="Студия MikroLab: редактор ассемблера, регистры процессора и ячейки памяти" width="1440" height="900" loading="lazy"><span class="scene-caption">3D / ПРОЦЕССОР · КОНТАКТЫ · ПЛАТА</span></div>
-            <div class="card-body"><h3>MikroLab</h3><p>Заглянуть внутрь процессора. Эмулятор Intel 8080, ассемблер, отладчик и учебная лаборатория.</p><div class="card-footer"><span class="tech-label">C# · .NET · Intel 8080</span><a class="icon-link" href="https://github.com/remageht/MikroLab" target="_blank" rel="noopener noreferrer" aria-label="Открыть проект MikroLab"><svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></a></div></div>
+            <div class="card-body"><h3>MikroLab</h3><p>Заглянуть внутрь процессора. Эмулятор Intel 8080, ассемблер, отладчик и учебная лаборатория.</p><div class="card-footer"><span class="tech-label">C# · .NET · Intel 8080</span><a class="icon-link" href="https://github.com/remageht/MikroLab" target="_blank" rel="noopener noreferrer" aria-label="Открыть проект MikroLab" data-tooltip="Открыть проект MikroLab · новая вкладка"><svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></a></div></div>
           </article>
 
           <article class="project-card voice-card span-6" data-reveal>
-            <div class="card-top"><span class="category">04 / ИСКУССТВЕННЫЙ ИНТЕЛЛЕКТ</span><span class="outline-label">LOCAL-FIRST</span></div>
+            <div class="card-top"><span class="category">04 / ИСКУССТВЕННЫЙ ИНТЕЛЛЕКТ</span><span class="outline-label tech-term" tabindex="0" data-tooltip="Local-first — данные обрабатываются и остаются на вашем устройстве">LOCAL-FIRST</span></div>
             <div class="voice-visual object-stage" data-model="voice" aria-hidden="true"><span class="voice-mark"><svg class="icon"><use href="#icon-wave"/></svg></span><div class="waveform"><i style="--bar:22%;--n:0"></i><i style="--bar:35%;--n:1"></i><i style="--bar:19%;--n:2"></i><i style="--bar:47%;--n:3"></i><i style="--bar:67%;--n:4"></i><i style="--bar:38%;--n:5"></i><i style="--bar:80%;--n:6"></i><i style="--bar:100%;--n:7"></i><i style="--bar:61%;--n:8"></i><i style="--bar:83%;--n:9"></i><i style="--bar:50%;--n:10"></i><i style="--bar:72%;--n:11"></i><i style="--bar:94%;--n:12"></i><i style="--bar:69%;--n:13"></i><i style="--bar:40%;--n:14"></i><i style="--bar:66%;--n:15"></i><i style="--bar:88%;--n:16"></i><i style="--bar:57%;--n:17"></i><i style="--bar:36%;--n:18"></i><i style="--bar:64%;--n:19"></i><i style="--bar:43%;--n:20"></i><i style="--bar:25%;--n:21"></i><i style="--bar:39%;--n:22"></i><i style="--bar:16%;--n:23"></i></div><span class="visual-caption scene-caption">3D / МИКРОФОН · ЗВУК · АУДИОКНИГА</span></div>
-            <div class="card-body"><h3>ReVoice</h3><p>Локальная студия синтеза речи и создания аудиокниг. Твой голос, твой компьютер, без подписок.</p><div class="card-footer"><span class="tech-label">Python · Tauri · Qwen3-TTS</span><a class="icon-link" href="https://github.com/remageht/ReVoice" target="_blank" rel="noopener noreferrer" aria-label="Открыть проект ReVoice"><svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></a></div></div>
+            <div class="card-body"><h3>ReVoice</h3><p>Локальная студия синтеза речи и создания аудиокниг. Твой голос, твой компьютер, без подписок.</p><div class="card-footer"><span class="tech-label">Python · <span class="tech-term" tabindex="0" data-tooltip="Tauri — десктопное приложение на веб-технологиях">Tauri</span> · Qwen3-TTS</span><a class="icon-link" href="https://github.com/remageht/ReVoice" target="_blank" rel="noopener noreferrer" aria-label="Открыть проект ReVoice" data-tooltip="Открыть проект ReVoice · новая вкладка"><svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></a></div></div>
           </article>
 
           <article class="project-card devops-card span-4" data-reveal>
             <div class="card-top"><span class="category">05 / ИНФРАСТРУКТУРА</span><svg class="icon muted-icon" aria-hidden="true"><use href="#icon-terminal"/></svg></div>
             <div class="terminal-visual object-stage" data-model="devops" aria-hidden="true"><div class="terminal-dots"><i></i><i></i><i></i><span>infrastructure</span></div><p><span>$</span> docker compose up</p><div class="terminal-row"><span>app</span><b>running</b></div><div class="terminal-row"><span>prometheus</span><b>running</b></div><div class="terminal-row"><span>grafana</span><b>running</b></div><span class="terminal-footnote">ИЛЛЮСТРАЦИЯ СТЕКА</span><span class="scene-caption">3D / СЕРВЕРЫ · СЕТЬ · ДАННЫЕ</span></div>
-            <div class="card-body"><h3>Personal DevOps</h3><p>Контейнеры, метрики, логи и резервные копии. Инфраструктура под контролем.</p><div class="card-footer"><span class="tech-label">Docker · FastAPI · Grafana</span><a class="icon-link" href="https://github.com/remageht/personal-devops-platform" target="_blank" rel="noopener noreferrer" aria-label="Открыть Personal DevOps Platform"><svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></a></div></div>
+            <div class="card-body"><h3>Personal DevOps</h3><p>Контейнеры, метрики, логи и резервные копии. Инфраструктура под контролем.</p><div class="card-footer"><span class="tech-label">Docker · FastAPI · Grafana</span><a class="icon-link" href="https://github.com/remageht/personal-devops-platform" target="_blank" rel="noopener noreferrer" aria-label="Открыть Personal DevOps Platform" data-tooltip="Открыть Personal DevOps Platform · новая вкладка"><svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></a></div></div>
           </article>
 
           <article class="project-card trade-card span-4" data-reveal>
@@ -121,11 +121,11 @@
           <article class="project-card namaz-card span-4" data-reveal>
             <div class="card-top"><span class="category">07 / НА КАЖДЫЙ ДЕНЬ</span><svg class="icon muted-icon" aria-hidden="true"><use href="#icon-moon"/></svg></div>
             <div class="namaz-visual object-stage" data-model="namaz" aria-hidden="true"><div class="compass"><span class="compass-n">N</span><span class="compass-s">S</span><span class="compass-w">W</span><span class="compass-e">E</span><span class="compass-needle"></span><span class="compass-center"></span></div><span class="visual-caption scene-caption">3D / КОМПАС КИБЛЫ · ЧАСЫ</span></div>
-            <div class="card-body"><h3>Намаз</h3><p>Время молитв, направление Киблы и пошаговые уроки. В браузере и на твоих устройствах.</p><div class="card-footer"><span class="tech-label">PWA · Android · Windows</span><a class="icon-link" href="https://remageht.github.io/namaz-vakit/" target="_blank" rel="noopener noreferrer" aria-label="Открыть приложение Намаз"><svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></a></div></div>
+            <div class="card-body"><h3>Намаз</h3><p>Время молитв, направление Киблы и пошаговые уроки. В браузере и на твоих устройствах.</p><div class="card-footer"><span class="tech-label"><span class="tech-term" tabindex="0" data-tooltip="PWA — приложение устанавливается из браузера">PWA</span> · Android · Windows</span><a class="icon-link" href="https://remageht.github.io/namaz-vakit/" target="_blank" rel="noopener noreferrer" aria-label="Открыть приложение Намаз" data-tooltip="Открыть приложение Намаз · новая вкладка"><svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></a></div></div>
           </article>
 
           <article class="project-card eden-card span-12" data-reveal>
-            <div class="eden-copy"><span class="category">08 / ЭКСПЕРИМЕНТЫ</span><h3>Terraform Eden</h3><p>Из пустоши — в живой мир. Браузерная игра о терраформировании, эволюции и маленьких шагах к большим переменам.</p><a class="project-link" href="https://remageht.github.io/terraform-eden/" target="_blank" rel="noopener noreferrer" aria-label="Играть в Terraform Eden">Вырастить свой мир <svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></a></div>
+            <div class="eden-copy"><span class="category">08 / ЭКСПЕРИМЕНТЫ</span><h3>Terraform Eden</h3><p>Из пустоши — в живой мир. Браузерная игра о терраформировании, эволюции и маленьких шагах к большим переменам.</p><a class="project-link" href="https://remageht.github.io/terraform-eden/" target="_blank" rel="noopener noreferrer" aria-label="Вырастить свой мир — играть в Terraform Eden">Вырастить свой мир <svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></a></div>
             <div class="eden-visual object-stage" data-model="eden" aria-hidden="true"><div class="eden-orbit orbit-one"></div><div class="eden-orbit orbit-two"></div><div class="eden-core"><svg class="icon"><use href="#icon-leaf"/></svg></div><span class="eden-stage stage-one">01 / ДНК</span><span class="eden-stage stage-two">02 / БИОСФЕРА</span><span class="eden-stage stage-three">03 / ЦИВИЛИЗАЦИЯ</span><span class="scene-caption">3D / ПЛАНЕТА · БИОСФЕРА · ДНК</span></div>
           </article>
         </div>
@@ -151,7 +151,7 @@
       <span>© <span id="year">2026</span> EMIR / LAB</span>
       <p class="footer-note"><span class="status-dot" aria-hidden="true"></span><span class="note-stack"><span class="note-line is-active">ИДЕИ НЕ ЗАКАНЧИВАЮТСЯ.</span><span class="note-line" aria-hidden="true">СЛЕДУЮЩИЙ ЭКСПЕРИМЕНТ УЖЕ ИДЁТ.</span><span class="note-line" aria-hidden="true">СОБИРАЮ НОВОЕ — ВОЗВРАЩАЙСЯ.</span></span></p>
       <button class="motion-toggle" type="button" aria-pressed="true">Анимация: вкл <span class="motion-indicator" aria-hidden="true"></span></button>
-      <a href="#top" class="back-top" aria-label="Вернуться в начало страницы">Наверх <svg class="icon" aria-hidden="true"><use href="#icon-down"/></svg></a>
+      <a href="#top" class="back-top" aria-label="Наверх — вернуться в начало страницы">Наверх <svg class="icon" aria-hidden="true"><use href="#icon-down"/></svg></a>
     </footer>
   </div>
 </body>

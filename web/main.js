@@ -61,6 +61,15 @@ document.querySelector('#year').textContent = new Date().getFullYear();
 
 const precisePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
 
+function readBounds(element) {
+  const rect = element.getBoundingClientRect();
+  return { left: rect.left, top: rect.top + window.scrollY, width: rect.width, height: rect.height, viewportWidth: innerWidth, viewportHeight: innerHeight };
+}
+
+function boundsAreCurrent(bounds) {
+  return bounds && bounds.viewportWidth === innerWidth && bounds.viewportHeight === innerHeight;
+}
+
 for (const card of cards) {
   let bounds;
   let frame;
@@ -68,13 +77,14 @@ for (const card of cards) {
   let pointerY;
 
   card.addEventListener('pointerenter', () => {
-    bounds = card.getBoundingClientRect();
+    bounds = readBounds(card);
   });
 
   card.addEventListener('pointermove', (event) => {
     if (!motionEnabled || !precisePointer.matches || !bounds) return;
+    if (!boundsAreCurrent(bounds)) bounds = readBounds(card);
     pointerX = event.clientX - bounds.left;
-    pointerY = event.clientY - bounds.top;
+    pointerY = event.clientY - (bounds.top - window.scrollY);
     if (frame) return;
     frame = requestAnimationFrame(() => {
       card.style.setProperty('--pointer-x', `${pointerX}px`);
@@ -141,13 +151,14 @@ if (aboutSection) forgeObserver.observe(aboutSection);
 
 hero?.addEventListener('pointerenter', () => {
   if (!motionEnabled || !precisePointer.matches) return;
-  heroBounds = hero.getBoundingClientRect();
+  heroBounds = readBounds(hero);
 });
 
 hero?.addEventListener('pointermove', (event) => {
   if (!heroBounds || !motionEnabled || !precisePointer.matches) return;
+  if (!boundsAreCurrent(heroBounds)) heroBounds = readBounds(hero);
   hero.style.setProperty('--px', (((event.clientX - heroBounds.left) / heroBounds.width) * 2 - 1).toFixed(3));
-  hero.style.setProperty('--py', (((event.clientY - heroBounds.top) / heroBounds.height) * 2 - 1).toFixed(3));
+  hero.style.setProperty('--py', (((event.clientY - (heroBounds.top - window.scrollY)) / heroBounds.height) * 2 - 1).toFixed(3));
   hero.style.setProperty('--sheen', '1');
 });
 
@@ -208,3 +219,99 @@ window.addEventListener('scroll', () => {
 window.addEventListener('resize', updateScrollProgress);
 updateScrollProgress();
 setInterval(rotateNote, 5200);
+
+const tooltip = document.createElement('div');
+tooltip.className = 'site-tooltip';
+tooltip.id = 'site-tooltip';
+tooltip.setAttribute('role', 'tooltip');
+tooltip.hidden = true;
+document.body.append(tooltip);
+const tooltipTriggers = [...document.querySelectorAll('[data-tooltip]')];
+let activeTooltip;
+
+function placeTooltip(trigger) {
+  const rect = trigger.getBoundingClientRect();
+  const tip = tooltip.getBoundingClientRect();
+  const gap = 8;
+  const edge = 8;
+  let top = rect.top - tip.height - gap;
+  if (top < edge) top = rect.bottom + gap;
+  if (top + tip.height > innerHeight - edge) top = Math.max(edge, rect.top - tip.height - gap);
+  const left = Math.min(innerWidth - tip.width - edge, Math.max(edge, rect.left + rect.width / 2 - tip.width / 2));
+  tooltip.style.left = `${left}px`;
+  tooltip.style.top = `${top}px`;
+}
+
+function showTooltip(trigger) {
+  activeTooltip = trigger;
+  tooltip.textContent = trigger.dataset.tooltip;
+  tooltip.hidden = false;
+  tooltip.classList.remove('is-visible');
+  trigger.setAttribute('aria-describedby', tooltip.id);
+  requestAnimationFrame(() => {
+    placeTooltip(trigger);
+    tooltip.classList.add('is-visible');
+  });
+}
+
+function hideTooltip(trigger = activeTooltip) {
+  if (!trigger || activeTooltip !== trigger) return;
+  trigger.removeAttribute('aria-describedby');
+  tooltip.classList.remove('is-visible');
+  tooltip.hidden = true;
+  activeTooltip = undefined;
+}
+
+for (const trigger of tooltipTriggers) {
+  trigger.addEventListener('pointerenter', () => { if (precisePointer.matches) showTooltip(trigger); });
+  trigger.addEventListener('pointerleave', () => hideTooltip(trigger));
+  trigger.addEventListener('focus', () => showTooltip(trigger));
+  trigger.addEventListener('blur', () => hideTooltip(trigger));
+  trigger.addEventListener('keydown', (event) => { if (event.key === 'Escape') hideTooltip(trigger); });
+}
+
+function repositionTooltip() {
+  if (!activeTooltip) return;
+  if (document.activeElement === activeTooltip) requestAnimationFrame(() => placeTooltip(activeTooltip));
+  else hideTooltip(activeTooltip);
+}
+
+window.addEventListener('scroll', repositionTooltip, { passive: true });
+window.addEventListener('resize', repositionTooltip);
+
+const alphaButton = document.querySelector('[popovertarget="alpha-popover"]');
+const alphaPopover = document.getElementById('alpha-popover');
+const alphaClose = alphaPopover?.querySelector('.popover-close');
+
+function placePopover() {
+  if (!alphaButton || !alphaPopover?.matches(':popover-open')) return;
+  const rect = alphaButton.getBoundingClientRect();
+  const panel = alphaPopover.getBoundingClientRect();
+  const edge = 12;
+  const left = Math.min(innerWidth - panel.width - edge, Math.max(edge, rect.right - panel.width));
+  let top = rect.bottom + 8;
+  if (top + panel.height > innerHeight - edge) top = rect.top - panel.height - 8;
+  alphaPopover.style.left = `${left}px`;
+  alphaPopover.style.top = `${Math.max(edge, top)}px`;
+}
+
+alphaPopover?.addEventListener('toggle', (event) => {
+  alphaButton?.setAttribute('aria-expanded', String(event.newState === 'open'));
+  if (event.newState === 'open') {
+    requestAnimationFrame(() => {
+      placePopover();
+      alphaClose?.focus();
+    });
+  } else if (alphaPopover.contains(document.activeElement)) {
+    alphaButton?.focus();
+  }
+});
+
+alphaClose?.addEventListener('click', () => alphaPopover.hidePopover());
+alphaPopover?.addEventListener('keydown', (event) => {
+  if (event.key !== 'Escape') return;
+  event.preventDefault();
+  alphaPopover.hidePopover();
+});
+window.addEventListener('resize', placePopover);
+window.addEventListener('scroll', placePopover, { passive: true });

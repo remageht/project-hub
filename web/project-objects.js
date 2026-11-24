@@ -484,7 +484,12 @@ function startObjects() {
   let environment = studioEnvironment(renderer);
   const factories = { cycle: makeCycle, spark: makeSpark, astro: makeAstro, chip: makeChip, hush: makeHush, voice: makeVoice, devops: makeDevops, trade: makeTrade, namaz: makeNamaz, eden: makeEden };
   const views = stages.map(stage => {
-    const model = factories[stage.dataset.model]();
+    const owner = stage.closest('.project-card');
+    return { stage, factory: factories[stage.dataset.model], owner, idle: stage.hasAttribute('data-idle'), target: owner || stage.closest('.hero') || stage, introAt: 0, visible: false, time: 0, pointer: new THREE.Vector2(), tilt: new THREE.Vector2() };
+  });
+
+  function buildView(view) {
+    const model = view.factory();
     const scene = new THREE.Scene();
     scene.environment = environment.texture;
     scene.add(model.group);
@@ -494,10 +499,18 @@ function startObjects() {
     const camera = new THREE.PerspectiveCamera(32, 1, 0.1, 30); camera.position.z = 4.8;
     model.group.rotation.set(...model.rotation);
     model.animate(0);
-    const bounds = new THREE.Box3().setFromObject(model.group).getSize(new THREE.Vector3());
-    const owner = stage.closest('.project-card');
-    return { stage, model, scene, camera, bounds, owner, fit: model.fit ?? 1, idle: stage.hasAttribute('data-idle'), target: owner || stage.closest('.hero') || stage, introAt: 0, visible: false, time: 0, pointer: new THREE.Vector2(), tilt: new THREE.Vector2() };
-  });
+    view.model = model;
+    view.scene = scene;
+    view.camera = camera;
+    view.fit = model.fit ?? 1;
+    view.bounds = new THREE.Box3().setFromObject(model.group).getSize(new THREE.Vector3());
+    view.introAt = 0;
+    view.time = 0;
+    view.pointer.set(0, 0);
+    view.tilt.set(0, 0);
+  }
+
+  views.forEach(buildView);
   const preference = matchMedia('(prefers-reduced-motion: reduce)');
   const coarsePointer = matchMedia('(pointer: coarse)');
   let frame = 0, lastDraw = 0, disposed = false, contextLost = false, dirty = true, hovered;
@@ -589,11 +602,19 @@ function startObjects() {
   window.addEventListener('resize', refresh, { passive: true });
   document.addEventListener('visibilitychange', () => { if (document.hidden) { cancelAnimationFrame(frame); frame = 0; } else refresh(); });
   canvas.addEventListener('webglcontextlost', event => { event.preventDefault(); contextLost = true; cancelAnimationFrame(frame); frame = 0; canvas.style.visibility = 'hidden'; views.forEach(view => { view.stage.classList.remove('scene-ready'); view.owner?.classList.remove('has-3d'); }); });
-  canvas.addEventListener('webglcontextrestored', () => { environment.dispose(); environment = studioEnvironment(renderer); views.forEach(view => { view.scene.environment = environment.texture; }); contextLost = false; canvas.style.visibility = ''; refresh(); });
+  canvas.addEventListener('webglcontextrestored', () => {
+    geometries.clear(); materials.clear(); textures.clear();
+    environment = studioEnvironment(renderer);
+    views.forEach(buildView);
+    contextLost = false; canvas.style.visibility = ''; refresh();
+  });
   window.addEventListener('pagehide', event => {
     if (event.persisted) return;
     disposed = true; cancelAnimationFrame(frame); observer.disconnect(); resize.disconnect(); settings.disconnect();
-    geometries.forEach(value => value.dispose()); materials.forEach(value => value.dispose()); textures.forEach(value => value.dispose()); environment.dispose(); renderer.dispose(); canvas.remove();
+    if (!contextLost) {
+      geometries.forEach(value => value.dispose()); materials.forEach(value => value.dispose()); textures.forEach(value => value.dispose()); environment.dispose(); renderer.dispose();
+    }
+    geometries.clear(); materials.clear(); textures.clear(); canvas.remove();
   });
   refresh();
 }
